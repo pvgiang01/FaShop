@@ -1,0 +1,166 @@
+<div class="wrapper">
+    <header class="main-header">
+        <!-- Logo -->
+        <a class="logo"><b>Admin</b></a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top" role="navigation">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <!-- User Account: style can be found in dropdown.less -->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image" />
+                            <span class="hidden-xs">Admin</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="user-footer">
+
+                                <div class="pull-right">
+                                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- Sidebar user panel -->
+            <div class="user-panel">
+                <div class="pull-left image">
+                    <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
+                </div>
+                <div class="pull-left info">
+                    <p>Admin</p>
+
+                    <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                </div>
+            </div>
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu">
+                <li class="header">MAIN NAVIGATION</li>
+                <li class="active treeview">
+                    <a onclick="goHome()">
+                        <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="active treeview">
+                    <a onclick="goToProduct()">
+                        <i class="fa fa-dashboard"></i> <span>Product</span></i>
+                    </a>
+                </li>
+                <li class="active treeview">
+                    <a onclick="goToCategory()">
+                        <i class="fa fa-dashboard"></i> <span>Category</span></i>
+                    </a>
+                </li>
+                <li class="active treeview">
+                    <a onclick="goToVoucher()">
+                        <i class="fa fa-dashboard"></i> <span>Voucher</span>
+                    </a>
+                </li>
+                <li class="active treeview">
+                    <a onclick="goToCart()">
+                        <i class="fa fa-dashboard"></i> <span>Order</span>
+                    </a>
+                </li>
+                <li class="active treeview">
+                    <a onclick="goToStatistical()">
+                        <i class="fa fa-dashboard"></i> <span>Statistical</span>
+                    </a>
+                </li>
+                <li class="active treeview">
+                    <a onclick="goToAdmin()">
+                        <i class="fa fa-dashboard"></i> <span>Admin</span>
+                    </a>
+                </li>
+                <li class="active treeview">
+                    <a onclick="goToUser()">
+                        <i class="fa fa-dashboard"></i> <span>User</span>
+                    </a>
+                </li>
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+    <div class="content-wrapper">
+        <section class="content">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1>Admin</h1>
+                </div>
+            </div>
+            <table class="table table-bordered text-center">
+                <thead>
+                    <tr>
+                        {{!-- id or số thứ tự --}}
+                        <th>STT</th>
+                        <th>Email</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each admin}}
+                    <tr class="text-center">
+                        {{!-- id or số thứ tự --}}
+                        <td>{{soThuTu @index}}</td>
+                        <td>{{this.email}}</td>
+                        {{!-- <td class="text-center"><button class="btn btn-danger" data-toggle="modal"
+                                data-target="#delete{{this._id}}">Remove<i class="fas fa-trash-alt"></i></button>
+                        </td> --}}
+                    </tr>
+                    {{/each}}
+
+                </tbody>
+            </table>
+        </section>
+    </div>
+    <div class="modal fade" id="delete{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <small>Are you sure delete "{{this.email}}"?</small> <br> <br>
+                    <a class="btn btn-danger" href="/adminmanager/delete/{{this.email}}">Delete anyway</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const goToProduct = () => {
+        window.location.href = '/product'
+    }
+    const goToCategory = () => {
+        window.location.href = '/category'
+    }
+    const goToUser = () => {
+        window.location.href = '/usermanager'
+    }
+    const goHome = () => {
+        window.location.href = '/dashboard'
+    }
+    const goToVoucher = () => {
+        window.location.href = '/voucher'
+    }
+    const goToCart = () => {
+        window.location.href = '/order'
+    }
+    const goToStatistical = () => {
+        window.location.href = '/statistical'
+    }
+</script>

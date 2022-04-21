@@ -1,0 +1,36 @@
+body {
+    background-image: url('/images/bgl.jpg');
+    background-size: cover;
+}
+.content-wrapper{
+    display: flex;
+}
+.form-wrapper{
+    border-radius: 20px;
+    background-image: linear-gradient(rgba(255,171,72,0.75), rgba(255,72,137,0.75));
+    transition: .5s;
+    
+}
+a:hover{
+    text-decoration: none;
+}
+
+#btn-login{
+    margin-top: 30px;
+    transition: .3s;
+    background-color: white;
+    border: none;
+    color: black;
+    border-radius: 5px;
+}
+
+#btn-login:hover{
+    transform: scale(1.1);
+    background-color: rgb(39, 39, 39);
+    color: white;
+}
+
+h3, label {
+    color: white;
+    font-weight: bold;
+}

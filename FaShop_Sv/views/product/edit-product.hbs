@@ -1,0 +1,95 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<style>
+    body {
+        padding: 50px;
+        font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    }
+
+    a {
+        color: #00B7FF;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2>Product Form</h2>
+        </div>
+        <form action="/product/{{product._id}}/edit" method="post" class="col-sm-12" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">Name Product:</label>
+                <input type="text" class="form-control" id="name" placeholder="Enter Name Product" name="name"
+                    value="{{ product.name }}">
+            </div>
+            <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="number" class="form-control" id="price" name="price" placeholder="Price"
+                    value="{{ product.price }}">
+            </div>
+            <div class="form-group">
+                <label for="published">Published:</label>
+                <input type="date" class="form-control" id="published" name="published"
+                    value="{{formatDate product.published 0}}">
+            </div>
+            <div class="form-group">
+                <label for="available">Available</label>
+                {{#if product.available}}
+                <input type="checkbox" checked class="available" value="{{product.available}}" name="available" />
+                {{else}}
+                <input type="checkbox" class="available" value="{{product.available}}" name="available" />
+                {{/if}}
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea type="text" class="form-control" id="description" placeholder="Enter Description"
+                    name="description" rows="4" value="">
+                        {{ product.description }}
+                    </textarea>
+            </div>
+            <div class="form-group">
+                <label for="idCategory">Category:</label>
+                <select class="form-control" name="category">
+                    {{#each category}}
+                    {{#if (isDefine this._id ../product.category)}}
+                    <option selected value="{{this._id}}">{{this.name}}</option>
+                    {{else}}
+                    <option value="{{this._id}}">{{this.name}}</option>
+                    {{/if}}
+                    {{/each}}
+                </select>
+            </div>
+            <div class="form-group">
+                <img id="img-view" width="150" height="150" src="{{product.image}}" />
+                <input class="form-control-file" onchange="onChangeFile()" type="file" id="img-file" name="image"
+                    value="{{product.img}}">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="goBack()">Close</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const goBack = () => {
+        window.location.href = '/product'
+    }
+    const onChangeFile = () => {
+        const file = document.getElementById('img-file').files[0];
+        const reader = new FileReader();
+        reader.onload = e => {
+            document.getElementById('img-view').src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+    }
+</script>

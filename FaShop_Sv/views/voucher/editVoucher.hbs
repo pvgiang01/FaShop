@@ -1,0 +1,83 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<style>
+    body {
+        padding: 50px;
+        font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    }
+
+    a {
+        color: #00B7FF;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2>Voucher Form</h2>
+        </div>
+        <form action="/voucher/edit/{{voucher._id}}" method="post" class="col-sm-12"
+            enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">Name Vocuher:</label>
+                <input type="text" class="form-control" id="name" placeholder="Enter Name Product"
+                    name="name" value="{{ voucher.name }}">
+            </div>
+            <div class="form-group">
+                <label for="price">Code:</label>
+                <input type="text" class="form-control" id="code" name="code" placeholder="Code"
+                    value="{{ voucher.code }}">
+            </div>
+            <div class="form-group">
+                <label for="number">Value:</label>
+                <input required type="number" class="form-control" id="value" name="value" value="{{ voucher.value }}">
+            </div>
+            <div class="form-group">
+                <label for="time">Expired date:</label>
+                 <div class="input-group mb-3">
+                    <input required type="date" class="form-control col-2" id="published" placeholder="Enter expired date" name="date"
+                    value="{{convertDate voucher.expiredTime true false}}" />
+                    <input required type="time" class="form-control col-2" id="published" placeholder="Enter expired date" name="time"
+                    value="{{convertDate voucher.expiredTime false true}}" />
+                 </div>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea type="text" class="form-control" id="description" placeholder="Enter Description"
+                    name="description" rows="4" value="">
+                        {{ voucher.description }}
+                    </textarea>
+            </div>
+            <div class="form-group">
+                <img id="img-view" width="150" height="150" src="{{voucher.image}}" />
+                <input class="form-control-file" onchange="onChangeFile()" type="file" id="img-file" name="image" value="{{voucher.image}}">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="goBack()">Close</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const goBack = () => {
+        window.location.href = '/voucher'
+    }
+    const onChangeFile = () => {
+        const file = document.getElementById('img-file').files[0];
+        const reader = new FileReader();
+        reader.onload = e => {
+            document.getElementById('img-view').src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+    }
+</script>

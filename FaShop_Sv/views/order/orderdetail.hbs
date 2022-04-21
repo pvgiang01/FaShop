@@ -1,0 +1,69 @@
+<head>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2>Order Details</h2>
+        </div>
+        <div class="col-sm-6 text-right">
+            <button type="button" class="btn btn-primary" onclick="goBackorder()">Go
+                back</button>
+        </div>
+    </div>
+        <div class="form-group">
+            <label>User: {{user.name}}</label>
+        </div>
+        <div class="form-group">
+            <label for="createdTime">Created Time:
+                {{formatDate order.createdTime}}</label>
+        </div>
+        <div class="form-group">
+            <label for="">Status: {{order.status}}</label>
+        </div>
+        <div class="form-group">
+            <label for="">Total: {{this.total}}</label>
+        </div>
+        <table class="table text-center">
+            <thead>
+                <tr>
+                    {{! id or số thứ tự }}
+                    <th>STT</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody id="tblBody">
+                {{#each orderDetail.products}}
+                <tr>
+                    {{! id or số thứ tự }}
+                    <td>{{soThuTu @index}}</td>
+                    <td><img width="200" height="130" src="{{this.image}}"></td>
+                    <td>{{this.name}}</td>
+                    <td>{{this.price}}</td>
+                    <td>{{this.quantity}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+</div>
+
+<script>
+    function goBackorder() {
+        window.location.href = '/order'
+    }
+</script>

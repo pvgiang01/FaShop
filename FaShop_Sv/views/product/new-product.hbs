@@ -1,0 +1,120 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<style>
+    body {
+        padding: 50px;
+        font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    }
+    a {
+        color: #00B7FF;
+    }
+    .display-none {
+        display: none;
+    }
+    .img-cover {
+        object-fit: cover;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2>Product Form</h2>
+        </div>
+        <form action="/product/add-product" method="post" class="col-sm-12" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">Name Product:</label>
+                    <input type="text" onchange="validate()" class="form-control" id="name" placeholder="Enter Name Product" name="name">
+            </div>
+            <div class="form-group">
+                <label for="price">Price:</label>
+                    <input type="number" onchange="validate()" class="form-control" id="price" name="price" placeholder="Price">
+            </div>
+            {{!-- <div class="form-group">
+                <label for="number">Number:</label>
+                <input type="number" class="form-control" id="number" name="number" value="{{ product.number }}">
+            </div> --}}
+            <div class="form-group">
+                <label for="published">Published:</label>
+                  <input type="date" onchange="validate()" class="form-control" id="published" name="published">
+            </div>
+            <div class="form-group">
+                <label for="available">Available: </label>
+                <input type="checkbox"  class="available" name="available" id="available">
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                    <textarea type="text" class="form-control" onchange="validate()" id="description" placeholder="Enter Description"
+                        name="description" rows="4">
+                    </textarea>
+            </div>
+            <div class="form-group">
+                <label for="category">Category:</label>
+                    <select class="form-control" name="category" id="category">
+                        {{#each category}}
+                        <option value="{{ this._id }}">{{ this.name }}</option>
+                        {{/each}}
+                    </select>
+            </div>
+            <div class="form-group">
+                <img id="img-view" class="display-none img-cover" width="150" height="150" src=""/>
+                    <input class="form-control-file" multiple onchange="onChangeFile()" type="file" id="img-file" name="image"/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="goBack()">Close</button>
+                <button type="submit" id="btnSave" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const goBack = () => {
+        window.location.href = '/product'
+    }
+    const firebaseConfig = {
+        apiKey: "AIzaSyCnXynxi3c0pbo3YI4Q_u4-Am6wLcrbHks",
+        authDomain: "datn-6d558.firebaseapp.com",
+        projectId: "datn-6d558",
+        storageBucket: "datn-6d558.appspot.com",
+        messagingSenderId: "485658145051",
+        appId: "1:485658145051:web:2bfed240c95956c65e23be",
+        measurementId: "G-TMTZTKQ7LS"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const onChangeFile = () => {
+        const file = document.getElementById('img-file').files[0];
+        const reader = new FileReader();
+        reader.onload = e => {
+            document.getElementById('img-view').src = e.target.result;
+            document.getElementById('img-view').classList.remove('display-none');
+        }
+        reader.readAsDataURL(file);
+        //upload
+        const ref = firebase.storage().ref(uuid());
+        const uploadTask = ref.put(file);
+        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+            (snapshot) => {},
+            (error) => { console.log('firebase error: ', error)},
+            () => {
+                uploadTask.snapshot.ref.getDownloadURL().then(url => {
+                    document.getElementById('image').value = url;
+                })
+            }
+        );
+    }
+    const uuid = () => {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+</script>
