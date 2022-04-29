@@ -73,11 +73,6 @@
                     </a>
                 </li>
                 <li class="active treeview">
-                    <a onclick="goToStatistical()">
-                        <i class="fa fa-dashboard"></i> <span>Statistical</span>
-                    </a>
-                </li>
-                <li class="active treeview">
                     <a onclick="goToAdmin()">
                         <i class="fa fa-dashboard"></i> <span>Admin</span>
                     </a>
@@ -102,17 +97,17 @@
                 <thead>
                     <tr>
                         {{!-- id or số thứ tự --}}
-                        <th>STT</th>
-                        <th>Email</th>
-                        <th>Action</th>
+                        <th><h2>STT</h2></th>
+                        <th><h2>Email</h2></th>
+                        <th><h2>Action</h2></th>
                     </tr>
                 </thead>
                 <tbody>
                     {{#each admin}}
                     <tr class="text-center">
                         {{!-- id or số thứ tự --}}
-                        <td>{{soThuTu @index}}</td>
-                        <td>{{this.email}}</td>
+                        <td><h4>{{soThuTu @index}}</h4></td>
+                        <td><h4>{{this.email}}</h4></td>
                         {{!-- <td class="text-center"><button class="btn btn-danger" data-toggle="modal"
                                 data-target="#delete{{this._id}}">Remove<i class="fas fa-trash-alt"></i></button>
                         </td> --}}

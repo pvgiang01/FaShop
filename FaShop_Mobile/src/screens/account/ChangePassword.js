@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, Dimensions, TextInput, StyleSheet, ScrollView, ImageBackground, TouchableOpacity, Alert } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign';
 import { COLORS } from '../../constants';
+import urlUser from  '../api/api_user'
 const screen = Dimensions.get('window');
 const ChangePassword = ({ navigation, route }) => {
     let { isForgot, email } = route.params
@@ -20,7 +21,7 @@ const ChangePassword = ({ navigation, route }) => {
             return;
         }
         if (validateP(newP, newP2) == true) {
-            fetch('http://192.168.1.151:3000/api_user/' + "change-password", {
+            fetch(urlUser.ipv4 + "change-password", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -29,9 +30,9 @@ const ChangePassword = ({ navigation, route }) => {
                 body: JSON.stringify({ oldP: currentP, newP: newP, newP2: newP2, email: defaultEmail, forgot: false }),
             }).then(res => {
                 if (res.status == 200) {
-                    // ToastAndroid.show(json.msg, ToastAndroid.SHORT);
-                    return { msg: "Đổi mật khẩu thành công!" }
-                    // navigation.replace("SignIn");
+                    navigation.navigate("Profile");
+                    return { msg: "Đổi mật khẩu thành công!" 
+                }
                 } else {
                     return res.json();
                 }
@@ -53,7 +54,7 @@ const ChangePassword = ({ navigation, route }) => {
             console.log("Hãy nhập địa chỉ email");
             return;
         }
-        fetch('http://192.168.1.151:3000/api_user/' + "get-otp", {
+        fetch(urlUser.ipv4 + "get-otp", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

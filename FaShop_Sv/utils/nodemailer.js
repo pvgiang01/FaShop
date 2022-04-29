@@ -40,7 +40,7 @@ exports.sendOTP = (to, otp) => {
             </a>
           </div>
           <p style="font-size:1.1em">Hi,</p>
-          <p>Thank you for choosing gh FaShop. Use the following OTP to reset your password. OTP is valid for 3 minutes</p>
+          <p>Thank you for choosing FaShop. Use the following OTP to reset your password. OTP is valid for 3 minutes</p>
           <h2 style="background: #f08d00;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${otp}</h2>
           <p style="font-size:0.9em;">Regards,<br />FaShop</p>
           <hr style="border:none;border-top:1px solid #eee" />

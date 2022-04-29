@@ -6,6 +6,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var bodyParser = require('body-parser')
 
 const cors = require('cors');
 const hbs = require('hbs');
@@ -34,14 +35,20 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static('public'))
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json({limit:'1024mb'}));
 app.use(session({
   secret: process.env.JWT_SECRET_KEY,
   resave: true,
   saveUninitialized: true,
   cookie: { secure: false },
 }));
+app.use(session({
+  secret: 'hhh',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { maxAge: 3600000 }
+}))
 mongoose.connect(process.env.MONGODB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,

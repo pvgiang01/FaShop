@@ -25,7 +25,7 @@ router.post("/addVoucher", middleAddVoucher, async function (req, res, next) {
   let date = moment(body.date + " " + body.time + ":00");
   body = { ...body, expiredTime: date.utcOffset("+0700").toDate().getTime() };
   if(file){
-    const image = 'http://192.168.1.151:3000/images/' + file.filename;
+    const image = 'http://10.82.181.249:3000/images/' + file.filename;
     body = {...body,image}
   }
   await voucherController.addNewVoucher(body);
@@ -53,7 +53,7 @@ router.post("/edit/:id", middleAddVoucher, async function (req, res, next) {
   let date = moment(body.date + " " + body.time);
   body = { ...body, expiredTime: date.utcOffset("+0700").toDate().getTime() };
   if(file){
-    const image = 'http://192.168.1.151:3000/images/' + file.filename;
+    const image = 'http://10.82.181.249:3000/images/' + file.filename;
     body = {...body,image}
   }
   await voucherController.updateVoucher(body, id);

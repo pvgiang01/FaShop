@@ -17,7 +17,7 @@ router.get('/add-category', async function(req, res, next) {
 router.post('/add-category',[upload.single('image')], async function(req, res, next) {
   let {body,file} = req;
   if(file){
-    const image = 'http://192.168.1.151:3000/images/' + file.filename;
+    const image = 'http://10.82.181.249:3000/images/' + file.filename;
     body = {...body,image}
   }
   await categoryController.addNewCategory(body);
@@ -33,7 +33,7 @@ router.get('/:id/edit', async function(req, res, next) {
 router.post('/:id/edit',[upload.single('image')], async function(req, res, next) {
     let {params,body,file} = req;
     if(file){
-      const image = 'http://192.168.1.151:3000/images/' + file.filename;
+      const image = 'http://10.82.181.249:3000/images/' + file.filename;
       body = {...body,image}
     }
     body = {...body,_id:params.id}

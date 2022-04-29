@@ -4,12 +4,14 @@ const cartController = require('../controllers/cart')
 const userController = require('../controllers/users')
 const orderController = require('../controllers/order')
 const orderDetailController = require('../controllers/orderdetail')
-const auth = require('../middle/authen')
+const auth = require('../middle/authen');
+const { decode } = require("jsonwebtoken");
 
 router.get("/cart",async function(req,res,next){
     const p = await orderController.getListOrder()
     res.json(p)
 })
+
 router.post("/cart/new", auth.checkMobileAuthentication, async function (req, res, next) {
     const { _id, name, image, quantity, price } = req.body;
     let success = await cartController.addNewCart({
@@ -71,9 +73,4 @@ router.get("/cart/get", auth.checkMobileAuthentication, async function (req, res
     return res.json(list);
 }
 );
-router.delete("/delete", async function (req, res, next) {
-    let { params } = req;
-    await cartController.remove(params.id);
-    res.json({ res: true });
-  });
 module.exports = router;

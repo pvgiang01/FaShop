@@ -8,7 +8,7 @@ const Splash = (props) => {
     <View style={{ flex: 1, backgroundColor: 'orange', alignItems: 'center', justifyContent: 'center' }}>
       <LottieView source={a}
         autoPlay loop={false}
-        speed={0.5}
+        speed={1}
         onAnimationFinish={() =>navigation.navigate('Login')}
         style={{ height: 350, width: 350 }} />
         <View style={{alignItems:'center'}}>

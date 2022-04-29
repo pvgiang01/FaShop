@@ -3,6 +3,11 @@ import React,{useState,useEffect} from 'react'
 import FontAwesome from 'react-native-vector-icons/FontAwesome5'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { SwipeListView } from 'react-native-swipe-list-view'
+import urlCategory from '../api/api_category'
+import urlProduct from '../api/api_product'
+import urlCart from '../api/api_cart'
+import urlUser from '../api/api_user'
+import urlVoucher from '../api/api_voucher'
 const CartScreen = (props) => {
   const {navigation} = props
   const [showCheckOut, setShowCheckOut] = useState(false);
@@ -16,7 +21,7 @@ const CartScreen = (props) => {
   const [superTotal, setSuperTotal] = useState(0);
   async function getProfile() {
     let token = await AsyncStorage.getItem("t");
-    fetch('http://192.168.1.151:3000/api_user/' + "check", {
+    fetch(urlUser.ipv4 + "check", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -44,7 +49,7 @@ const CartScreen = (props) => {
     updateQuantity(cart_id, false);
   };
   const saveVoucher = (code) => {
-    fetch('http://192.168.1.151:3000/api_voucher/' + "get-voucher", {
+    fetch(urlVoucher.ipv4 + "get-voucher", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -65,7 +70,7 @@ const CartScreen = (props) => {
       .catch((err) => console.log(err));
   };
   const updateQuantity = async (id, t) => {
-    fetch('http://192.168.1.151:3000/api_cart/' + "cart/change-quantity", {
+    fetch(urlCart.ipv4 + "cart/change-quantity", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -121,7 +126,7 @@ const CartScreen = (props) => {
       let c = { id: e.id, quantity: e.quantity };
       list.push(c);
     });
-    fetch('http://192.168.1.151:3000/api_product/' + "get-total", {
+    fetch(urlProduct.ipv4 + "get-total", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -134,7 +139,7 @@ const CartScreen = (props) => {
       .catch((err) => console.log(err));
   };
   const getData = async () => {
-    fetch('http://192.168.1.151:3000/api_cart/' + "cart/get", {
+    fetch(urlCart.ipv4 + "cart/get", {
       headers: {
         Accept: "application/json",
         Authorization: "Bearer " + (await AsyncStorage.getItem("t")),
@@ -152,7 +157,7 @@ const CartScreen = (props) => {
     let list = products.map((e) => {
       return e;
     });
-    fetch('http://192.168.1.151:3000/api_cart/' + "create-order", {
+    fetch(urlCart.ipv4 + "create-order", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -172,35 +177,6 @@ const CartScreen = (props) => {
         if (json.status) {
           console.log("Thanh cong");
           navigation.goBack();
-        }
-      })
-      .catch((err) => console.log(err));
-  };
-  const deleteCart = async (products, total, value, superTotal) => {
-    let token = await AsyncStorage.getItem("t");
-    let list = products.map((e) => {
-      delete e.image;
-      return e;
-    });
-    fetch('http://192.168.1.151:3000/api_cart/' + "delete", {
-      method: "DELETE",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-      body: JSON.stringify({
-        products: list,
-        total: total,
-        value: value,
-        superTotal: superTotal,
-      }),
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json);
-        if (json.status) {
-          console.log("Thanh cong");
         }
       })
       .catch((err) => console.log(err));

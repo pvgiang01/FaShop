@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/core';
 import Logo from '../../images/logo.jpg'
 import Icon from 'react-native-vector-icons/AntDesign'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import urlUser from '../api/api_user'
 export const LoginScreen = () => {
   const navigation = useNavigation()
   const [email, setEmail] = useState('')
@@ -18,7 +19,7 @@ export const LoginScreen = () => {
       Alert.alert("Không được để trống password");
       return;
     } else {
-      fetch('http://192.168.1.151:3000/api_user/' + "login", {
+      fetch(urlUser.ipv4 + "login", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -43,7 +44,7 @@ export const LoginScreen = () => {
   React.useEffect(() => {
     async function fetchData() {
       let token = await AsyncStorage.getItem("t");
-      fetch('http://192.168.1.151:3000/api_user/' + "check", {
+      fetch(urlUser.ipv4 + "check", {
         method: "POST",
         headers: {
           Accept: 'application/json',

@@ -1,6 +1,11 @@
 import { StyleSheet, Text, View,Dimensions,TextInput,TouchableOpacity,FlatList,Image,ActivityIndicator } from 'react-native'
 import React,{useState,useEffect} from 'react'
 import FontAwesome from 'react-native-vector-icons/FontAwesome5'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import urlCategory from '../api/api_category'
+import urlProduct from '../api/api_product'
+import urlUser from '../api/api_user'
+
 const WIDTH = Dimensions.get("window");
 const Menu = (props) => {
   const {navigation} = props
@@ -9,6 +14,7 @@ const Menu = (props) => {
   const [productList, setProductList] = useState([]);
   const [currentCategory, setCurrentCategory] = useState();
   const [keyWord, setKeyWord] = useState([]);
+  const [profile, setProfile] = useState({});
   const [isLoading,setIsLoaing] = useState(true)
   const setStatusFilter = (currentCategory) => {
     if (currentCategory !== "All") {
@@ -24,7 +30,7 @@ const Menu = (props) => {
   };
 
   useEffect(() => {
-    fetch('http://192.168.1.151:3000/api_product/' + "category/all")
+    fetch(urlProduct.ipv4 + "category/all")
       .then((response) => response.json())
       .then((json) => {
         setProductFilter(json);
@@ -34,7 +40,7 @@ const Menu = (props) => {
   }, []);
 
   useEffect(() => {
-    fetch('http://192.168.1.151:3000/api_category/' + "category")
+    fetch(urlCategory.ipv4 + "category")
       .then((response) => response.json())
       .then((json) => setCategoryList(json))
       .catch((err) => console.log(err))
@@ -44,11 +50,34 @@ const Menu = (props) => {
     if (keyWord == "") {
       return;
     }
-    await fetch('http://192.168.1.151:3000/api_product/' + "search/" + keyWord)
+    await fetch(urlProduct.ipv4 + "search/" + keyWord)
       .then((response) => response.json())
       .then((json) => setProductFilter(json))
       .catch((error) => console.error(error));
   };
+  async function getProfile() {
+    let token = await AsyncStorage.getItem("t");
+    fetch(urlUser.ipv4 + "check", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json);
+        if (json.success) {
+          setProfile(json.data);
+        }
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoaing(false))
+  }
+  useEffect(() => {
+    getProfile();
+  }, []);
 
   const renderItem = ({ item }) => {
     return (
@@ -77,12 +106,14 @@ const Menu = (props) => {
     <View style={styles.container}>
       <View style={styles.viewPlace}>
         <View style={styles.viewIconPlace}>
-          <FontAwesome name="map-marker-alt" size={24} color="orange" />
-          <Text style={styles.textPlace}>Cong vien phan mem quang trung</Text>
-          <TouchableOpacity  onPress={()=>navigation.navigate('CartScreen')}>
-        <FontAwesome name="shopping-cart" size={24} color="orange" style={{marginLeft:60}}/>
-      </TouchableOpacity>
+        <FontAwesome name="map-marker-alt" size={24} color="orange" />
+          {isLoading ? <ActivityIndicator/> :(
+          <Text style={styles.textPlace}>{profile ? profile.address : ""}</Text>
+          )}
         </View>
+         <TouchableOpacity  onPress={()=>navigation.navigate('CartScreen')}>
+        <FontAwesome name="shopping-cart" size={24} color="orange" style={{marginLeft:0}}/>
+      </TouchableOpacity>
       </View>
       <View style={styles.viewSearch}>
         <TextInput
@@ -155,7 +186,7 @@ const styles = StyleSheet.create({
   },
   viewPlace: {
     marginTop: 10,
-    width: "80%",
+    width: "100%",
     flexDirection: "row",
   },
   viewIconPlace: {

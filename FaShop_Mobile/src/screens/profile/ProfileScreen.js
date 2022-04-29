@@ -3,6 +3,8 @@ import {StyleSheet,Text,View,Image,TouchableOpacity,Pressable,Dimensions,Activit
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
 import {COLORS} from "../../constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import urlUser from '../api/api_user'
+
 const WIDTH = Dimensions.get("window");
 const ProfileScreen = ({ navigation, route }) => {
   let p = route.params ? route.params.profile : {};
@@ -13,7 +15,7 @@ const ProfileScreen = ({ navigation, route }) => {
   }
   async function getProfile() {
     let token = await AsyncStorage.getItem("t");
-    fetch('http://192.168.1.151:3000/api_user/' + "check", {
+    fetch(urlUser.ipv4 + "check", {
       method: "POST",
       headers: {
         Accept: "application/json",

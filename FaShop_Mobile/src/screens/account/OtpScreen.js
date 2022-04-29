@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, Alert, TextInput, TouchableHighlight,StyleSheet,Dimensions,ImageBackground,ScrollView } from 'react-native'
 import { COLORS } from '../../constants';
 import Logo from '../../images/logo.jpg'
+import urlUser from '../api/api_user'
 const OtpScreen = ({ navigation, route }) => {
     let { email, otp } = route.params;
     const [userOtp, setUserOtp] = useState('')
@@ -11,7 +12,7 @@ const OtpScreen = ({ navigation, route }) => {
     function requestOtp() {
         setPR(true);
         countdownGetOtp()
-        fetch('http://192.168.1.151:3000/api_user/' + "forgotP", {
+        fetch(urlUser.ipv4 + "forgotP", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

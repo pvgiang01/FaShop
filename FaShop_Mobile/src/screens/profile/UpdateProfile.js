@@ -5,6 +5,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome5'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { launchImageLibrary } from 'react-native-image-picker'
 import ImagePicker from 'react-native-image-crop-picker'
+import urlUser from '../api/api_user'
+
 const UpdateProfile = (props) => {
   const { navigation } = props
   const [profile, setProfile] = useState();
@@ -17,7 +19,7 @@ const UpdateProfile = (props) => {
   const [isLoading, setIsLoading] = useState(true)
   async function getProfile() {
     let token = await AsyncStorage.getItem("t");
-    fetch('http://192.168.1.151:3000/api_user/' + "check", {
+    fetch(urlUser.ipv4 + "check", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -56,7 +58,7 @@ const UpdateProfile = (props) => {
   }
 
   async function updateProfile(name, phone, address, image, email) {
-    await fetch('http://192.168.1.151:3000/api_user/' + "updateProfile", {
+    await fetch(urlUser.ipv4 + "updateProfile", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -95,22 +97,12 @@ const UpdateProfile = (props) => {
             </TouchableOpacity>
           </View>
           <View style={styles.viewInput}>
-            <FontAwesome name="envelope" size={20} color="orange" />
-            <View style={styles.viewTitle}>
-              <Text style={styles.title}>Email</Text>
-              <TextInput
-                style={styles.input}
-                placeholder={profile ? profile.email : ""}
-                editable={false}
-              ></TextInput>
-            </View>
-          </View>
-          <View style={styles.viewInput}>
             <FontAwesome name="user" size={20} color="orange" />
             <View style={styles.viewTitle}>
               <Text style={styles.title}>Tên</Text>
               <TextInput
                 style={styles.input}
+                placeholder="Nhập tên người dùng"
                 defaultValue={profile ? profile.name : ""}
                 onChangeText={(e) => setName(e)}
               ></TextInput>
@@ -142,7 +134,7 @@ const UpdateProfile = (props) => {
           </View>
         </View>
       )}
-      <View style={{ alignItems: "center", marginTop: 100 }}>
+      <View style={{ alignItems: "center", marginTop: 180 }}>
         <TouchableOpacity
           onPress={() =>
             updateProfile(name, phone, address, base64, profile.email)}

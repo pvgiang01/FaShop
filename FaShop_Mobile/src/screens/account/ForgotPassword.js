@@ -2,10 +2,9 @@ import React, { useState } from 'react'
 import {View, Text, Alert, TextInput, TouchableOpacity,StyleSheet,ImageBackground,ScrollView,Dimensions } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign';
 import Logo from '../../images/logo.jpg'
-
+import urlUser from '../api/api_user'
 const ForgotPassword = ({ navigation, route }) => {
     let email = route.params.email;
-    // let email = "huywoaytai@gmail.com";
     const [newP, setNewP] = useState('');
     const [newP2, setNewP2] = useState('');
     const [showP, setShowP] = useState(false);
@@ -13,7 +12,7 @@ const ForgotPassword = ({ navigation, route }) => {
 
     function changePassword(defaultEmail, newP, newP2) {
         if (validateP(newP, newP2) == true) {
-            fetch('http://192.168.1.151:3000/api_user/' + "change-password", {
+            fetch(urlUser.ipv4 + "change-password", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

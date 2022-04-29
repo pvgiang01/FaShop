@@ -1,44 +1,44 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, StyleSheet, Text, TouchableOpacity, View,ActivityIndicator } from 'react-native'
+import { FlatList, StyleSheet, Text, TouchableOpacity, View,ActivityIndicator,Image } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Moment from 'react-moment';
+import urlCart from '../api/api_cart'
 const OrderSceen = ({ navigation }) => {
     const [orderList, setOrderList] = useState([]);
     const [dList, setDList] = useState([]);
     const [isLoading,setIsLoading] = useState(true)
-    useEffect(() => {
-        async function getOrders() {
-                let token = await AsyncStorage.getItem("t");
-                fetch('http://192.168.1.151:3000/api_cart/' + "cart", {
-                    method: "GET",
-                    headers: {
-                        Accept: "application/json",
-                        "Content-Type": "application/json",
-                        Authorization: "Bearer " + token,
-                    },
-                })
-                    .then((response) => response.json())
-                    .then((json) => {
-                        console.log(json.list)
-                        if (json.success) {
-                            setOrderList(json);
-                            setDList(json);
-                        }
-                    })
-                    .catch((err) => console.log(err));        
-        }
-        getOrders();
-    }, [])
-
+    async function getOrders() {
+        let token = await AsyncStorage.getItem("t");
+        fetch(urlCart.ipv4 + "cart", {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+            },
+        })
+        .then((response) => response.json())
+        .then((json) =>
+            {
+                console.log(json)
+                setDList(json)
+            }
+        )
+        .catch((err) => console.log(err))
+        .finally(() => setIsLoading(false))
+    }
+    useEffect(() =>{
+        getOrders()
+    },[])
     function getDate(date) {
         return Moment(date).format("DD-MM-yyyy");
     }
     function renderOrders({ item }) {
         return (
-            <TouchableOpacity style={styles.item_order} onPress={() => navigation.navigate("OrderDetail", { id: item._id })}>
+            <TouchableOpacity style={styles.item_order} onPress={() => navigation.navigate("OrderDetail", { post:item })}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Text style={styles.normal_text} >Đặt lúc:
-                        {getDate(item.createdTime)}
+                    {item.createdTime})
                     </Text>
                     <Text style={styles.bold_text}>{item.status}</Text>
                 </View>

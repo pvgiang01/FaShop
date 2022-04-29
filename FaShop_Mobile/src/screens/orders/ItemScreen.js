@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View, Dimensions, Image, Alert, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import urlCart from '../api/api_cart'
 const WIDTH = Dimensions.get("window");
 const ItemScreen = ({ route, navigation }) => {
-
   const [quantity, setQuantity] = useState(1);
   const up = () => {
     setQuantity(quantity + 1)
@@ -21,7 +21,7 @@ const ItemScreen = ({ route, navigation }) => {
   };
 
   const updateQuantity = async () => {
-    fetch('http://192.168.1.151:3000/api_cart/' + "cart/update-quantity", {
+    fetch(urlCart.ipv4 + "cart/update-quantity", {
       headers: {
         Accept: "application/json",
         Authorization: "Bearer " + await AsyncStorage.getItem("t"),
@@ -35,16 +35,16 @@ const ItemScreen = ({ route, navigation }) => {
   async function addToCart() {
     console.log(await AsyncStorage.getItem("t"));
     let itemData = { ...item, quantity: quantity }
-    fetch('http://192.168.1.151:3000/api_cart/' + "cart/new", {
+    fetch(urlCart.ipv4 + "cart/new", {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
         Authorization: "Bearer " + await AsyncStorage.getItem("t"),
       },
-      body: JSON.stringify(itemData),
+      body: JSON.stringify(itemData),//chuyển object sang json
     })
-      .then((response) => response.json())
+      .then((response) => response.json()) //response là đối tượng trả về json
       .then((json) => {
         console.log(json);
         if (json.status) {

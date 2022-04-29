@@ -22,7 +22,7 @@ exports.removeCategory = async function (_id) {
     await categoryModel.remove({ _id: _id });
 }
 exports.search = async function (keyword) {
-    let temp = await categoryModel.find();
+    let temp = await categoryModel.find()
     if (keyword == "false") {
       return temp;
     }
